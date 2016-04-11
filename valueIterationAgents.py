@@ -28,18 +28,12 @@ class ValueIterationAgent(ValueEstimationAgent):
     self.iterations = iterations
     self.values = util.Counter() # A Counter is a dict with default 0
 
-
-
-
     "*** YOUR CODE HERE ***"
     for i in range(len(mdp.getStates())):
         self.values[mdp.getStates()[i]] = 0.0
 
     values_tmp = self.values
-
-
-    #exclusion = ['TERMINAL_STATE', (3, 2), (3, 1)]
-    exclusion = []
+    exclusion = ['TERMINAL_STATE']
     for it in range(self.iterations):
         for i in range(len(mdp.getStates())):
             if mdp.getStates()[i] in exclusion:
@@ -52,26 +46,14 @@ class ValueIterationAgent(ValueEstimationAgent):
 
                 for ns in next_states:
                     summation += ns[1] * (mdp.getReward(mdp.getStates()[i], actions[j], ns[0]) + self.discount * self.values[ns[0]])
-                    if mdp.getReward(mdp.getStates()[i], actions[j], ns[0]) != 0.0:
-                        print "hererer"
                 V_s.append(summation)
-
-
-
-
-            #assert(len(V_s) > 0)
+            assert(len(V_s) > 0)
             maximum = V_s[0]
             for k in range(len(V_s)):
                 maximum = max(maximum, V_s[k])
             values_tmp[mdp.getStates()[i]] = maximum
         self.values = values_tmp
-
-
-
-    "*** YOUR CODE HERE -END- ***"
-
-
-
+    print self.values
 
     
   def getValue(self, state):
